@@ -1,5 +1,6 @@
 package com.example.GestionStages.models;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
@@ -8,25 +9,24 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Tuteur")
-public class Tuteur extends User {
+@DiscriminatorValue("Stagiaire")
+public class Stagiaire extends User {
 
-    private String entreprise;
+    private String institution;
 
-    @JsonManagedReference(value = "tuteur-appreciation")
-    @OneToMany(mappedBy = "tuteur", cascade = CascadeType.ALL)
-    private List<Appreciation> appreciations;
+    @JsonManagedReference(value = "stagiaire-periode")
+    @OneToMany(mappedBy = "stagiaire", cascade = CascadeType.ALL)
+    private List<Periode> periodes;
 
-    public Tuteur(String username, String password, String firstname, String lastname) {
+    public Stagiaire(String username, String password, String firstname, String lastname) {
         super(username, password, firstname, lastname);
-        this.entreprise = entreprise;
-        this.appreciations = appreciations;
+        this.institution = institution;
+        this.periodes = periodes;
     }
 }
