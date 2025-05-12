@@ -1,5 +1,6 @@
 package com.example.GestionStages.Services;
 
+import com.example.GestionStages.models.Tuteur;
 import com.example.GestionStages.models.User;
 import com.example.GestionStages.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class UserService {
     UserRepository userRepository;
 
     // Méthode pour enregistrer un utilisateur
-    public User register(User user){
-        return userRepository.save(user);
+    public User register(Tuteur tuteur){
+        return userRepository.save(tuteur);
     }
 
     // Méthode pour vérifier un utilisateur (authentification)

@@ -1,6 +1,7 @@
 package com.example.GestionStages.controllers;
 
 import com.example.GestionStages.Services.UserService;
+import com.example.GestionStages.models.Tuteur;
 import com.example.GestionStages.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,8 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User regiseter(@RequestBody User user){
-        user.setPassword(encoder.encode(user.getPassword()));
-        return userService.register(user);
+    public User regiseter(@RequestBody Tuteur tuteur){
+        tuteur.setPassword(encoder.encode(tuteur.getPassword()));
+        return userService.register(tuteur);
     }
 }
