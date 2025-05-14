@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults()) // Enable CORS with the defined configuration
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("login", "register").permitAll()
+                        .requestMatchers("login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,9 +1,10 @@
 package com.example.GestionStages.Services;
 
-import com.example.GestionStages.models.Tuteur;
 import com.example.GestionStages.models.User;
 import com.example.GestionStages.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,38 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private JavaMailSender emailSender;
+
     // Méthode pour enregistrer un utilisateur
     public User addUser(User user){
         return userRepository.save(user);
+    }
+
+    public boolean sendEmail(User user, String password) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getUsername());
+            message.setSubject("Your Account Credentials");
+            message.setText(String.format(
+                "Bonjour %s %s,\n\n" +
+                "Votre compte a été créé avec succès.\n" +
+                "Voici vos identifiants de connexion:\n\n" +
+                "Nom d'utilisateur: %s\n" +
+                "Mot de passe: %s\n\n" +
+                "Veuillez modifier votre mot de passe après votre première connexion.\n\n" +
+                "Cordialement,\n" +
+                "L'équipe de l'application de getion des stages",
+                user.getFirstname(), user.getLastname(),
+                user.getUsername(), password
+            ));
+            
+            emailSender.send(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Méthode pour vérifier un utilisateur (authentification)
