@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { saveToken } from "../config/Auth";
+import { saveUserData } from "../config/Auth";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -18,13 +18,22 @@ const Login = () => {
         `${import.meta.env.VITE_API_URL}/login`,
         { username, password },
         {
-          headers: { "Content-Type": "application/json" },
-          responseType: "text",
+          headers: { "Content-Type": "application/json" }
         }
       );
-      saveToken(res.data);
+      
+      // Make sure we have all required fields
+      if (!res.data.username || !res.data.type || !res.data.token) {
+        throw new Error("Invalid response format");
+      }
+
+      // Save user data
+      saveUserData(res.data);
+      
+      // Navigate based on user type
       navigate("/users");
     } catch (err) {
+      console.error("Login error:", err);
       setError("Invalid credentials");
     }
   };

@@ -23,8 +23,8 @@ public class UserService {
     UserRepository userRepository;
 
     // Méthode pour enregistrer un utilisateur
-    public User register(Tuteur tuteur){
-        return userRepository.save(tuteur);
+    public User addUser(User user){
+        return userRepository.save(user);
     }
 
     // Méthode pour vérifier un utilisateur (authentification)

@@ -13,6 +13,7 @@ import UsersList from "./Components/user/UsersList";
 import PrivateRoute from "./Components/ProtectedRoute";
 import Logout from "./Components/Logout";
 import Sidebar from "./Components/layout/Sidebar";
+import Unauthorized from './Components/Unauthorized';
 
 // Wrapper pour inclure la sidebar dans les routes privées
 const PrivateLayout = () => (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Routes privées avec Sidebar */}
         <Route

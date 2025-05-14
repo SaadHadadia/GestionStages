@@ -10,6 +10,6 @@ public class UserDTO {
     private String username;
     private String firstname;
     private String lastname;
-    private String type; // Pour identifier le type d'utilisateur (Tuteur ou Stagiaire)
+    private String type;
 }
 
