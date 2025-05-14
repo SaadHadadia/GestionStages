@@ -22,14 +22,8 @@ public class AuthController {
     public LogedUserDTO login(@RequestBody User user) {
         LogedUserDTO logedUser = new LogedUserDTO();
         logedUser.setUsername(user.getUsername());
-        logedUser.setType("Admin"); // Fetch the user type from the database
+        logedUser.setType("Tuteur"); // Fetch the user type from the database
         logedUser.setToken(userService.verify(user));
         return logedUser;
-    }
-
-    @PostMapping("/register")
-    public User regiseter(@RequestBody Tuteur tuteur){
-        tuteur.setPassword(encoder.encode(tuteur.getPassword()));
-        return userService.addUser(tuteur);
     }
 }
