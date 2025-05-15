@@ -1,6 +1,10 @@
 package com.example.GestionStages.controllers;
+import com.example.GestionStages.Services.PeriodeService;
+import com.example.GestionStages.Services.StagiaireService;
+import com.example.GestionStages.Services.UserService;
+import com.example.GestionStages.dto.AttribuerStageDTO;
 import com.example.GestionStages.dto.StageDTO;
-import com.example.GestionStages.models.Stage;
+import com.example.GestionStages.models.*;
 import com.example.GestionStages.mappers.MapperService;
 import com.example.GestionStages.Services.StageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +21,17 @@ public class StageController {
 
     private final StageService stageService;
     private final MapperService mapperService;
+    private final StagiaireService stagiaireService;
+    private final PeriodeService periodeService;
+    private final UserService userService;
 
     @Autowired
-    public StageController(StageService stageService, MapperService mapperService) {
+    public StageController(StageService stageService, MapperService mapperService, StagiaireService stagiaireService, PeriodeService periodeService, UserService userService) {
         this.stageService = stageService;
         this.mapperService = mapperService;
+        this.stagiaireService = stagiaireService;
+        this.periodeService = periodeService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -61,6 +71,35 @@ public class StageController {
         Stage savedStage = stageService.saveStage(stage);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperService.toStageDTO(savedStage));
     }
+
+    @PostMapping("attribuer")
+    public Periode attribuerStage(@RequestBody AttribuerStageDTO stageDTO) {
+
+        Stage stage = new Stage();
+        Stage savedStage = stageService.saveStage(stage);
+
+        Optional<Stagiaire> stagiaireOpt = stagiaireService.getStagiaireByUsername(stageDTO.getStagiaireId());
+        Stagiaire stagiaire = stagiaireOpt.get();
+
+
+        Periode periode = new Periode(
+                stageDTO.getDateDebut(),
+                stageDTO.getDateFin(),
+                savedStage,
+                stagiaire
+        );
+
+        Periode savedPeriode = periodeService.savePeriode(periode);
+
+        Optional<User> tuteurOpt = userService.getUserByUsername(stageDTO.getTuteurId());
+        User tuteur = tuteurOpt.get();
+
+        periodeService.sendEmail(tuteur ,savedPeriode);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPeriode).getBody();
+
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<StageDTO> updateStage(@PathVariable Long id, @RequestBody StageDTO stageDTO) {

@@ -1,5 +1,3 @@
-// src/pages/users/UsersList.tsx
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AddUser from "./AddUser";
@@ -94,6 +92,7 @@ const UsersList: React.FC = () => {
             lastname: formData.lastname,
             entreprise: formData.entreprise,
           };
+          alert("Utilisateur creé avec succès!");
           break;
         case "Stagiaire":
           endpoint = "/api/users/addStagiaire";
@@ -103,6 +102,7 @@ const UsersList: React.FC = () => {
             lastname: formData.lastname,
             institution: formData.institution,
           };
+          alert("Utilisateur creé avec succès!");
           break;
         case "Admin":
           endpoint = "/api/users/addAdmin";
@@ -111,6 +111,7 @@ const UsersList: React.FC = () => {
             firstname: formData.firstname,
             lastname: formData.lastname,
           };
+          alert("Utilisateur creé avec succès!");
           break;
         default:
           throw new Error("Type d'utilisateur non valide");

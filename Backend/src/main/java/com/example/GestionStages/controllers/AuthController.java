@@ -22,7 +22,8 @@ public class AuthController {
     public LogedUserDTO login(@RequestBody User user) {
         LogedUserDTO logedUser = new LogedUserDTO();
         logedUser.setUsername(user.getUsername());
-        logedUser.setType("Tuteur"); // Fetch the user type from the database
+        String userType = userService.getUserType(user.getUsername());
+        logedUser.setType(userType);
         logedUser.setToken(userService.verify(user));
         return logedUser;
     }
