@@ -1,7 +1,11 @@
 package com.example.GestionStages.Services;
 
+import com.example.GestionStages.models.Admin;
+import com.example.GestionStages.models.Stagiaire;
+import com.example.GestionStages.models.Tuteur;
 import com.example.GestionStages.models.User;
 import com.example.GestionStages.repositories.UserRepository;
+import jakarta.persistence.DiscriminatorValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -35,7 +39,7 @@ public class UserService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getUsername());
-            message.setSubject("Your Account Credentials");
+            message.setSubject("Vos identifiants de compte");
             message.setText(String.format(
                 "Bonjour %s %s,\n\n" +
                 "Votre compte a été créé avec succès.\n" +
@@ -75,5 +79,11 @@ public class UserService {
     // Méthode pour récupérer un utilisateur par son username
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);  // Cette méthode récupère un utilisateur par son nom d'utilisateur
+    }
+
+    public String getUserType(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 }

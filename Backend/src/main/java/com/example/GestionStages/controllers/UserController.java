@@ -40,9 +40,7 @@ public class UserController {
         List<UserDTO> userDTOs = users.stream()
                 .map(user -> {
                     UserDTO dto = mapperService.toUserDTO(user);
-                    if (user instanceof Admin) {
-                        dto.setType("Admin");
-                    }
+                    dto.setType(userService.getUserType(dto.getUsername()));
                     return dto;
                 })
                 .collect(Collectors.toList());

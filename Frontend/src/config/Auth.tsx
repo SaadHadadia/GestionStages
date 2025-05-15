@@ -16,7 +16,7 @@ export const isAuthenticated = (): boolean => {
 
 export type UserData = {
   username: string;
-  type: string;
+  type: 'Admin' | 'Tuteur' | 'Stagiaire';
   token: string;
 };
 

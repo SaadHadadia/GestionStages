@@ -1,5 +1,5 @@
 import React from "react";
-import { LogOut, User, Home, Settings } from "lucide-react";
+import { LogOut, User, Home, Settings, Workflow } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { removeToken } from "../../config/Auth"; // Ton helper pour supprimer le token
 
@@ -15,6 +15,8 @@ const Sidebar = () => {
     { name: "Accueil", icon: <Home size={20} />, path: "/" },
     { name: "Utilisateurs", icon: <User size={20} />, path: "/users" },
     { name: "Paramètres", icon: <Settings size={20} />, path: "/settings" },
+    { name: "Attribuer Stage", icon: <Workflow size={20} />, path: "/attribuerstage",
+    },
   ];
 
   return (
