@@ -30,13 +30,15 @@ public class Appreciation {
     @JsonBackReference(value = "periode-appreciation")
     private Periode periode;
 
-    @JsonManagedReference(value = "appreciation-evaluation")
-    @OneToMany(mappedBy = "appreciation", cascade = CascadeType.ALL)
-    private List<Evaluation> evaluations;
+    @ManyToOne
+    @JoinColumn(name = "evaluation_id")
+    @JsonBackReference(value = "appreciation-evaluation")
+    private Evaluation evaluation;
 
-    @JsonManagedReference(value = "appreciation-competence")
-    @OneToMany(mappedBy = "appreciation", cascade = CascadeType.ALL)
-    private List<Competence> competences;
+    @ManyToOne
+    @JoinColumn(name = "competence_id")
+    @JsonBackReference(value = "appreciation-competence")
+    private Competence competence;
 
     public Appreciation(String commentaire, Tuteur tuteur, Periode periode) {
         this.commentaire = commentaire;

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { isAuthenticated, getUserData } from "../config/Auth";
+import { isAuthenticated, getUserData } from "./Auth";
 import { JSX } from "react";
 
 interface ProtectedRouteProps {

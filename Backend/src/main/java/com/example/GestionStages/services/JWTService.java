@@ -1,4 +1,4 @@
-package com.example.GestionStages.Services;
+package com.example.GestionStages.services;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

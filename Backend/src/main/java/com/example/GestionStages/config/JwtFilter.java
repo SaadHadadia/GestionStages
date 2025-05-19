@@ -1,7 +1,7 @@
 package com.example.GestionStages.config;
 
-import com.example.GestionStages.Services.CustomUserDetailsService;
-import com.example.GestionStages.Services.JWTService;
+import com.example.GestionStages.services.CustomUserDetailsService;
+import com.example.GestionStages.services.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

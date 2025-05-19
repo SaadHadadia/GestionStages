@@ -1,23 +1,63 @@
 import React from "react";
 import { LogOut, User, Home, Settings, Workflow } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { removeToken } from "../../config/Auth"; // Ton helper pour supprimer le token
+import { removeToken } from "../../config/Auth";
+
+// Example: get role from localStorage (adapt as needed)
+const getRole = () => {
+  const userData = localStorage.getItem("userData");
+  if (!userData) return "guest";
+  try {
+    const parsed = JSON.parse(userData);
+    return parsed.type || "guest";
+  } catch {
+    return "guest";
+  }
+};
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const role = getRole();
 
   const logout = () => {
-    removeToken(); // supprime le token (localStorage ou autre)
-    navigate("/login"); // redirige vers la page de login
+    removeToken();
+    navigate("/login");
   };
 
   const links = [
-    { name: "Accueil", icon: <Home size={20} />, path: "/" },
-    { name: "Utilisateurs", icon: <User size={20} />, path: "/users" },
-    { name: "Paramètres", icon: <Settings size={20} />, path: "/settings" },
-    { name: "Attribuer Stage", icon: <Workflow size={20} />, path: "/attribuerstage",
+    {
+      name: "Accueil",
+      icon: <Home size={20} />,
+      path: "/",
+      roles: ["Admin", "Tuteur", "Stagiaire"],
     },
+    {
+      name: "Utilisateurs",
+      icon: <User size={20} />,
+      path: "/users",
+      roles: ["Admin"],
+    },
+    {
+      name: "Paramètres",
+      icon: <Settings size={20} />,
+      path: "/settings",
+      roles: ["Admin", "Tuteur", "Stagiaire"], 
+    },
+    {
+      name: "Attribuer Stage",
+      icon: <Workflow size={20} />,
+      path: "/stage/attribuer",
+      roles: ["Admin"],
+    },
+    {
+      name: "Mes Stages",
+      icon: <Workflow size={20} />,
+      roles: ["Tuteur"],
+      path : ""
+    }
   ];
+
+  const visibleLinks = links.filter(link => link.roles.includes(role));
 
   return (
     <aside className="w-64 h-screen fixed bg-white text-gray-900 flex flex-col justify-between shadow-lg">
@@ -26,7 +66,7 @@ const Sidebar = () => {
           Gestion des stages
         </div>
         <nav className="flex flex-col gap-2 px-4 mt-6">
-          {links.map((link) => (
+          {visibleLinks.map((link) => (
             <button
               key={link.name}
               onClick={() => navigate(link.path)}
