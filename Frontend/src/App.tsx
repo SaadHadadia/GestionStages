@@ -5,15 +5,16 @@ import {
   Outlet,
   useLocation,
 } from "react-router-dom";
-import Login from "./Components/Login";
+import Login from "./Components/Auth/Login";
 import Home from "./Components/Home";
-import NotFound from "./Components/NotFound";
+import NotFound from "./Components/errorPages/NotFound";
 import UsersList from "./Components/user/UsersList";
-import PrivateRoute from "./Components/ProtectedRoute";
-import Logout from "./Components/Logout";
+import PrivateRoute from "./config/ProtectedRoute";
+import Logout from "./config/Logout";
 import Sidebar from "./Components/layout/Sidebar";
-import Unauthorized from './Components/Unauthorized';
-import AttribuerStage from './Components/AttribuerStage';
+import Unauthorized from "./Components/errorPages/Unauthorized";
+import AttribuerStage from "./Components/stage/AttribuerStage";
+import EvaluerStage from "./Components/stage/EvaluerStage";
 
 const PrivateLayout = () => (
   <div className="flex">
@@ -52,10 +53,19 @@ function App() {
           />
 
           <Route
-            path="/attribuerstage"
+            path="stage/attribuer"
             element={
               <PrivateRoute allowedRoles={["Admin"]}>
                 <AttribuerStage />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="stage/evaluer/:token"
+            element={
+              <PrivateRoute allowedRoles={["Tuteur"]}>
+                <EvaluerStage />
               </PrivateRoute>
             }
           />

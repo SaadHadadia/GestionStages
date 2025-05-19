@@ -19,19 +19,16 @@ public class Competence {
     private String intitule;
     private Integer note;
 
-    @ManyToOne
-    @JoinColumn(name = "appreciation_id")
-    @JsonBackReference(value = "appreciation-competence")
-    private Appreciation appreciation;
-
-    @JsonManagedReference(value = "competence-categorie")
+    @JsonManagedReference(value = "appreciation-competence")
     @OneToMany(mappedBy = "competence", cascade = CascadeType.ALL)
-    private List<Categorie> categories;
+    private List<Appreciation> appreciations;
 
-    public Competence(String intitule, Integer note, Appreciation appreciation,List<Categorie> categories) {
+    private Categorie categorie;
+
+    public Competence(String intitule, Integer note, List<Appreciation> appreciations,Categorie categorie) {
         this.intitule = intitule;
         this.note = note;
-        this.appreciation = appreciation;
-        this.categories = categories;
+        this.appreciations = appreciations;
+        this.categorie = categorie;
     }
 }

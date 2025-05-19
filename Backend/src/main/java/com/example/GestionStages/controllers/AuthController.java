@@ -1,8 +1,7 @@
 package com.example.GestionStages.controllers;
 
-import com.example.GestionStages.Services.UserService;
 import com.example.GestionStages.dto.LogedUserDTO;
-import com.example.GestionStages.models.Tuteur;
+import com.example.GestionStages.services.UserService;
 import com.example.GestionStages.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

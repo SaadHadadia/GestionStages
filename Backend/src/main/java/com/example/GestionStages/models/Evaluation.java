@@ -1,10 +1,13 @@
 package com.example.GestionStages.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,14 +20,13 @@ public class Evaluation {
     private String categorie;
     private String valeur;
 
-    @ManyToOne
-    @JoinColumn(name = "appreciation_id")
-    @JsonBackReference(value = "appreciation-evaluation")
-    private Appreciation appreciation;
+    @JsonManagedReference(value = "appreciation-evaluation")
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
+    private List<Appreciation> appreciations;
 
-    public Evaluation(String categorie, String valeur, Appreciation appreciation) {
+    public Evaluation(String categorie, String valeur, List<Appreciation> appreciations) {
         this.categorie = categorie;
         this.valeur = valeur;
-        this.appreciation = appreciation;
+        this.appreciations = appreciations;
     }
 }

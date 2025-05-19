@@ -1,29 +1,20 @@
 package com.example.GestionStages.models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
-public class Categorie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String intitule;
-    private String valeur;
+public enum Categorie {
+    GLOBALE ("Appreciations globales sur l\'etudiant(e)"),
+    INDIVIDU("Compétences liées a l'individu"),
+    ENTREPRISE("Compétences liées a l\'entreprise"),
+    TECHNIQUE("Compétences scientifiques et technique"),
+    METIER("Compétences scientifiques métier");
 
-    @ManyToOne
-    @JoinColumn(name = "competence_id")
-    @JsonBackReference(value = "competence-categorie")
-    private Competence competence;
+    private final String message;
 
-    public Categorie(String intitule, String valeur, Competence competence) {
-        this.intitule = intitule;
-        this.valeur = valeur;
-        this.competence = competence;
+    Categorie(String message) {
+        this.message = message;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
 }

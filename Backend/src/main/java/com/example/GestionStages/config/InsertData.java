@@ -11,9 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RootAdmin {
+public class InsertData {
     
-    private static final Logger logger = LoggerFactory.getLogger(RootAdmin.class);
+    private static final Logger logger = LoggerFactory.getLogger(InsertData.class);
     
     @Autowired
     private Environment env;
