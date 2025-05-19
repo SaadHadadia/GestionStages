@@ -28,7 +28,7 @@ public class InsertData {
         String username = env.getProperty("root.admin.username");
         String password = env.getProperty("root.admin.password");
 
-        if (username == null || password == null) {
+        if (username.isEmpty() || password.isEmpty()) {
             logger.error("Root admin credentials are not set in the environment variables.");
             throw new IllegalStateException("Root admin credentials are not set in the environment variables.");
         }
