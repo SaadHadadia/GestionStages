@@ -18,7 +18,7 @@ public class Appreciation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String commentaire;
+//    private String commentaire;
 
     @ManyToOne
     @JoinColumn(name = "tuteur_username")
@@ -40,8 +40,8 @@ public class Appreciation {
     @JsonBackReference(value = "appreciation-competence")
     private Competence competence;
 
-    public Appreciation(String commentaire, Tuteur tuteur, Periode periode) {
-        this.commentaire = commentaire;
+    public Appreciation( Tuteur tuteur, Periode periode) {
+//        this.commentaire = commentaire;
         this.tuteur = tuteur;
         this.periode = periode;
     }

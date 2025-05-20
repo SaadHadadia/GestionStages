@@ -36,6 +36,9 @@ public class StageController {
     private UserService userService;
 
     @Autowired
+    TuteurService tuteurService;
+
+    @Autowired
     private AppreciationService appreciationService;
 
    @Autowired
@@ -91,11 +94,15 @@ public class StageController {
     @PostMapping("attribuer")
     public Periode attribuerStage(@RequestBody AttribuerStageDTO stageDTO) {
 
-        Stage stage = new Stage();
-        Stage savedStage = stageService.addStage(stage);
-
         Optional<Stagiaire> stagiaireOpt = stagiaireService.getStagiaireByUsername(stageDTO.getStagiaireId());
         Stagiaire stagiaire = stagiaireOpt.get();
+
+        Optional<Tuteur> tuteurOpt = tuteurService.getTuteurByUsername(stageDTO.getTuteurId());
+        Tuteur tuteur = tuteurOpt.get();
+
+        Stage stage = new Stage();
+        stage.setEntreprise(tuteur.getEntreprise());
+        Stage savedStage = stageService.addStage(stage);
 
 
         Periode periode = new Periode(
@@ -106,9 +113,6 @@ public class StageController {
         );
 
         Periode savedPeriode = periodeService.addPeriode(periode);
-
-        Optional<User> tuteurOpt = userService.getUserByUsername(stageDTO.getTuteurId());
-        User tuteur = tuteurOpt.get();
 
         emailService.sendStageAttEmail(tuteur ,savedPeriode);
 
@@ -121,16 +125,32 @@ public class StageController {
         // Validate Periode
         Optional<Periode> periodeOpt = periodeService.getPeriodeById(periodeId);
         if (periodeOpt.isEmpty() || !periodeId.equals(evaluationStageDTO.getPeriodeId())) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
         }
         Periode periode = periodeOpt.get();
 
         // Validate Tuteur
         Optional<User> tuteurOpt = userService.getUserByUsername(evaluationStageDTO.getTuteurUsername());
         if (tuteurOpt.isEmpty() || !(tuteurOpt.get() instanceof Tuteur)) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
         }
         Tuteur tuteur = (Tuteur) tuteurOpt.get();
+
+        // Update Stage if provided
+        if (evaluationStageDTO.getStage() != null) {
+            Optional<Stage> stageOpt = stageService.getStageById(periode.getStage().getId());
+            if (stageOpt.isPresent()) {
+                Stage stage = stageOpt.get();
+                EvaluationStageDTO.StageInputDTO stageInput = evaluationStageDTO.getStage();
+                if (stageInput.getDescription() != null && !stageInput.getDescription().isEmpty()) {
+                    stage.setDescription(stageInput.getDescription());
+                }
+                if (stageInput.getObjectif() != null && !stageInput.getObjectif().isEmpty()) {
+                    stage.setObjectif(stageInput.getObjectif());
+                }
+                stageService.updateStage(stage);
+            }
+        }
 
         // Process each appreciation
         List<Appreciation> appreciations = new ArrayList<>();
@@ -138,41 +158,38 @@ public class StageController {
             // Validate Competence
             Optional<Competence> competenceOpt = competenceService.getCompetenceById(input.getCompetenceId());
             if (competenceOpt.isEmpty()) {
-                return ResponseEntity.badRequest().body(null);
+                return ResponseEntity.badRequest().build();
             }
             Competence competence = competenceOpt.get();
 
             // Validate Evaluation
             Optional<Evaluation> evaluationOpt = evaluationService.getEvaluationById(input.getEvaluationId());
             if (evaluationOpt.isEmpty()) {
-                return ResponseEntity.badRequest().body(null);
+                return ResponseEntity.badRequest().build();
             }
             Evaluation evaluation = evaluationOpt.get();
 
-            // Check if appreciation already exists for this Tuteur, Periode, and Competence
-            Optional<Appreciation> existingAppreciation = appreciationService.getAppreciationByTuteurAndPeriode(tuteur, periode);
-            if (existingAppreciation.isPresent()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-            }
-
             // Create Appreciation
             Appreciation appreciation = new Appreciation();
-            appreciation.setCommentaire(input.getCommentaire());
             appreciation.setTuteur(tuteur);
             appreciation.setPeriode(periode);
             appreciation.setCompetence(competence);
             appreciation.setEvaluation(evaluation);
-
             appreciations.add(appreciation);
         }
 
         // Save all appreciations
-        List<Appreciation> savedAppreciations = appreciationService.getAllAppreciations();
-        for (Appreciation appreciation : appreciations) {
-            savedAppreciations.add(appreciationService.addAppreciation(appreciation));
-        }
+        List<Appreciation> savedAppreciations = appreciationService.saveAllAppreciations(appreciations);
+
+        // Get the stagiaire
+
+//        String stagiereUsername = evaluationStageDTO.getStage().getStagiaireId();
+        String stagiereUsername = "seedspi0@gmail.com"; // Pour le Test
+
+        Optional<Stagiaire> stagiaireOPt =  stagiaireService.getStagiaireByUsername(stagiereUsername);
+        Stagiaire stagiaire = stagiaireOPt.get();
+        emailService.sendStageEvvEmail(stagiaire ,periode);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperService.toAppreciationDTOList(savedAppreciations));
     }
-
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public class EvaluationStageDTO {
     private Long periodeId;
     private String tuteurUsername;
+    private StageInputDTO stage;
     private List<AppreciationInputDTO> appreciations;
 
     @Data
@@ -22,4 +23,14 @@ public class EvaluationStageDTO {
         private Long evaluationId;
         private String commentaire;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StageInputDTO {
+        private String stagiaireId;
+        private String description;
+        private String objectif;
+    }
+
 }

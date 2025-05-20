@@ -62,7 +62,7 @@ function App() {
           />
 
           <Route
-            path="stage/evaluer/:token"
+            path="stage/evaluer/:periodeId"
             element={
               <PrivateRoute allowedRoles={["Tuteur"]}>
                 <EvaluerStage />

@@ -44,7 +44,7 @@ public class EmailService {
 
     public boolean sendStageAttEmail(User user, Periode periode) {
         try {
-            String link = env.getProperty("frontend.link")+"/stage/evaluer/";
+            String link = env.getProperty("frontend.link")+"/stage/evaluer/"+periode.getId();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getUsername());
             message.setSubject("Évaluation du stage");
@@ -54,7 +54,32 @@ public class EmailService {
                             "Cordialement,\n" +
                             "L'équipe de l'application de getion des stages",
                     user.getFirstname(), user.getLastname(),
-                    link+periode.getId()
+                    link
+            ));
+
+            emailSender.send(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean sendStageEvvEmail(User user, Periode periode){
+        try {
+            String link = env.getProperty("frontend.link") + "/stage/evaluation/" + periode.getId();
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(user.getUsername());
+            message.setSubject("Évaluation du stage");
+            message.setText(String.format(
+                    "Bonjour %s %s,\n\n" +
+                            "Le stage que vous avez passé dans l'entreprise %s de %s à %s a été évalué par M. %s %s.\n\n" +
+                            "Voir l'évaluation ici : %s\n\n" +
+                            "Cordialement,\n" +
+                            "L'équipe de l'application de gestion des stages",
+                    user.getFirstname(), user.getLastname(),
+                    periode.getStage().getEntreprise(), periode.getDateDebut(), periode.getDateFin(), periode.getAppreciations().get(0).getTuteur().getFirstname(), periode.getAppreciations().get(0).getTuteur().getLastname(),
+                    link
             ));
 
             emailSender.send(message);
