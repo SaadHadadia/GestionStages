@@ -5,6 +5,7 @@ import com.example.GestionStages.models.Competence;
 import com.example.GestionStages.models.Periode;
 import com.example.GestionStages.models.Tuteur;
 import com.example.GestionStages.repositories.AppreciationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -50,5 +51,10 @@ public class AppreciationService {
 
     public void deleteAppreciation(Long id) {
         appreciationRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<Appreciation> saveAllAppreciations(List<Appreciation> appreciations) {
+        return appreciationRepository.saveAll(appreciations);
     }
 }

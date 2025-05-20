@@ -167,7 +167,7 @@ public class MapperService {
         if (appreciation == null) return null;
         return new AppreciationDTO(
                 appreciation.getId(),
-                appreciation.getCommentaire(),
+//                appreciation.getCommentaire(),
                 appreciation.getTuteur() != null ? appreciation.getTuteur().getUsername() : null,
                 appreciation.getPeriode() != null ? appreciation.getPeriode().getId() : null,
                 appreciation.getEvaluation() != null ? appreciation.getEvaluation().getId() : null,
@@ -178,7 +178,7 @@ public class MapperService {
     public Appreciation toAppreciation(AppreciationDTO dto, Tuteur tuteur, Periode periode) {
         if (dto == null) return null;
         return new Appreciation(
-                dto.getCommentaire(),
+//                dto.getCommentaire(),
                 tuteur,
                 periode
         );
