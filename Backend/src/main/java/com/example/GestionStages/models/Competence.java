@@ -25,7 +25,7 @@ public class Competence {
 
     private Categorie categorie;
 
-    public Competence(String intitule, Integer note, List<Appreciation> appreciations,Categorie categorie) {
+    public Competence(String intitule, Integer note,List<Appreciation> appreciations, Categorie categorie) {
         this.intitule = intitule;
         this.note = note;
         this.appreciations = appreciations;

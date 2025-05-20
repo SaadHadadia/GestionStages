@@ -208,7 +208,7 @@ public class MapperService {
         return new Competence(
                 dto.getIntitule(),
                 dto.getNote(),
-                null, // Appreciations will be set separately
+                null,
                 dto.getCategorie() != null ? Categorie.valueOf(dto.getCategorie()) : null
         );
     }
@@ -236,7 +236,7 @@ public class MapperService {
         return new Evaluation(
                 dto.getCategorie(),
                 dto.getValeur(),
-                null // Appreciations will be set separately
+                null
         );
     }
 
